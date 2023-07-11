@@ -1,0 +1,11 @@
+@import 'tailwindcss/base.css';
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities.css';
+
+/** Imports here */
+@import 'project.scss';
+
+@import './css/editing.scss';
+@import './css/style.scss';
+@import './css/modals.scss';
+@import './css/fromVueTemplate.scss';

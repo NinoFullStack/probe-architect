@@ -1,0 +1,33 @@
+#architect {
+  .modalWindow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    z-index: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow: auto;
+    background-color: white;
+  }
+
+  .modalError {
+    border: 4px solid #de234b;
+    width: 50%;
+  }
+
+  .closeError {
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 0;
+  }
+}

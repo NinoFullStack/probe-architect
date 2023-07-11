@@ -1,0 +1,76 @@
+#architect {
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .rounded-all {
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+  }
+
+  .rounded-all-lightly {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+  }
+
+  .btn-major {
+    background-color: #fdf1ce;
+    color: black;
+    border: 3px solid #f4bc42;
+    box-shadow: -10px 5px 5px #c5952e;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .btn-major:hover {
+    background-color: #fffdf7;
+  }
+
+  .toPopSurvey {
+    width: 300px;
+    height: 210px;
+    content: url('./img/toPopulationSurvey.png');
+  }
+
+  .toPopSurvey:hover {
+    width: 300px;
+    height: 210px;
+    content: url('./img/toPopulationSurvey2.png');
+  }
+
+  .btn-info {
+    background-color: orange;
+  }
+
+  .btn-info:hover {
+    background-color: brown;
+  }
+
+  .modalWindow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    z-index: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow: auto;
+    background-color: white;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 0;
+  }
+}

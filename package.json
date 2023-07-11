@@ -1,0 +1,54 @@
+{
+  "name": "@qubeekio/probes-architect",
+  "files": [
+    "dist",
+    "dist/*.css"
+  ],
+  "main": "./dist/probes-architect.umd.js",
+  "module": "./dist/probes-architect.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/probes-architect.es.js",
+      "require": "./dist/probes-architect.umd.js"
+    },
+    "./dist/styles.css": "./dist/styles.css"
+  },
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build; postcss vue/styles/tailwind.scss -o dist/styles.css",
+    "build:css": "postcss vue/styles/tailwind.scss -o dist/styles.css",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@vueuse/core": "^8.4.2",
+    "bootstrap": "^5.3.0",
+    "defu": "^6.0.0",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^1.9.3",
+    "autoprefixer": "^10.3.7",
+    "bootstrap-vue": "^2.23.1",
+    "cssnano": "^4.1.10",
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.11.0",
+    "jquery": "^3.7.0",
+    "popper.js": "^1.16.1",
+    "postcss": "^8.3.11",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^12.0.0",
+    "postcss-nested": "^4.2.3",
+    "prettier": "^2.8.8",
+    "prettier-eslint": "^15.0.1",
+    "prettier-plugin-tailwindcss": "^0.2.8",
+    "sass": "^1.35.2",
+    "sass-loader": "^10.2.0",
+    "tailwindcss": "^3.3.2",
+    "vite": "^2.6.4",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}

@@ -1,0 +1,8 @@
+export { default as HomeView } from './home.vue'
+export { default as MapView } from './map.vue'
+export { default as OprosView } from './opros.vue'
+export { default as OprosPopView } from './oprosPop.vue'
+export { default as ZonirovanieView } from './zonirovanie.vue'
+export { default as DialogView } from './dialog.vue'
+export { default as EndingView } from './ending.vue'
+export { default as NotFoundView } from './NotFound.vue'
