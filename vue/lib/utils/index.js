@@ -1,0 +1,6 @@
+export { default as map } from './map'
+export { default as opros } from './opros'
+export { default as oprosPop } from './oprosPop'
+export { default as zon } from './zon'
+export { default as dialog } from './dialog'
+export { default as ending } from './ending'

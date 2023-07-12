@@ -1,8 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
-
 import { inject, onMounted } from 'vue'
+
+import { opros } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -14,133 +13,7 @@ const media = inject('media')
 const emit = defineEmits(['next'])
 
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  let counter = 0
-  let wrongs = [1, 2, 5, 7]
-  let corrAnsw = 'btn-outline-success'
-  // let answearEmptyElements;
-  let localCounter = 0
-
-  let questions = [
-    translate('Что вы обычно делаете в парках?'),
-    translate('Как зовут ваших домашних питомцев?'),
-    translate('Хотите ли вы уехать из города?'),
-    translate('Как сейчас используется выбранная территория?'),
-    translate(
-      'Какие особо значимые места и ценные объекты есть на территории и рядом с ней?'
-    ),
-    translate(
-      'Какого музыкального исполнителя вы бы пригласили на открытие парка?'
-    ),
-    translate('Какие основные проблемы характерны для выбранной территории?'),
-    translate('Какую вы предпочитаете кухню?'),
-    translate('Чего не хватает на данной территории?'),
-  ]
-
-  function setQuestion(n) {
-    if (n < questions.length) {
-      $('.oprosNum').text(
-        translate('Вопрос') + ' ' + (n + 1) + ' ' + translate('из') + ' 9'
-      )
-    }
-    $('.oprosQuestion').text(questions[n])
-    switch (n) {
-      case 7:
-        $('#questionBg').attr('src', media('../../public/img/questionBg2.png'))
-        $('.quest-content').addClass('quest-content_pos1')
-        break
-      case 8:
-        $('#questionBg').attr('src', media('../../public/img/questionBg3.png'))
-        $('.quest-content').removeClass('quest-content_pos1')
-        $('.quest-content').addClass('quest-content_pos2')
-        break
-    }
-  }
-
-  function wrongAnswer() {
-    window.localStorage.setItem('error', 'true')
-    $('.popup').addClass('_opened')
-    var popup = $('.popup')
-    window.setTimeout(function () {
-      popup.addClass('clickable')
-    }, 5)
-  }
-
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-  $(document).on('click', function (e) {
-    var popup = $('.popup')
-    if (
-      !$(e.target).closest('.popup').length &&
-      popup.hasClass('_opened') &&
-      popup.hasClass('clickable')
-    ) {
-      popup.removeClass('_opened')
-      window.setTimeout(function () {
-        popup.removeClass('clickable')
-      }, 5)
-    }
-  })
-  $(document).on('keydown', function (event) {
-    var popup = $('.popup')
-    var popupFinished = $('.popupFinished')
-
-    if (popup.hasClass('_opened') || popupFinished.hasClass('_opened')) {
-      if (event.key == 'Escape') {
-        popup.removeClass('_opened')
-        window.setTimeout(function () {
-          popup.removeClass('clickable')
-        }, 5)
-      }
-    }
-  })
-
-  setQuestion(counter)
-
-  $('.btn-answear').on('click', function () {
-    if (counter < questions.length)
-      if ($(this).hasClass(corrAnsw)) {
-        if (!wrongs.includes(counter)) {
-          let answearEmptyElements = $('.answear_empty')
-          localCounter = localCounter + 1
-
-          let newContent =
-            '<div class="answear__num">' +
-            localCounter +
-            '.</div>' +
-            '<div class="answear__text">' +
-            questions[counter] +
-            '</div>'
-          $(answearEmptyElements[0]).html(newContent)
-          $(answearEmptyElements[0]).removeClass('answear_empty')
-        }
-        counter++
-        if (counter == 9) {
-          $('.oprosGo').fadeOut(100)
-          $('.oprosFinish').removeClass('hidden')
-        }
-        setQuestion(counter)
-        if (wrongs.includes(counter)) {
-          corrAnsw = 'btn-outline-danger'
-        } else {
-          corrAnsw = 'btn-outline-success'
-        }
-      } else {
-        wrongAnswer()
-      }
-  })
+  opros()
 })
 
 function next_block(e) {

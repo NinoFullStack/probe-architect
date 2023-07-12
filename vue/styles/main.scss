@@ -3,7 +3,8 @@
 @import 'tailwindcss/utilities.css';
 
 /** Imports here */
-@import 'project.scss';
+
+@import './project.scss';
 
 @import './css/editing.scss';
 @import './css/style.scss';

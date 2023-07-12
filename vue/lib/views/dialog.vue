@@ -1,7 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
 import { inject, onMounted } from 'vue'
+
+import { dialog } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -10,105 +10,11 @@ const log = inject('log')
 // eslint-disable-next-line no-unused-vars
 const media = inject('media')
 
-let stageNum = 0
-let speechCounter = 0
-
 const emit = defineEmits(['next'])
 
-function wrongAnswer() {
-  window.localStorage.setItem('error', 'true')
-  let popup = $('.popup')
-  popup.addClass('_opened')
-  window.setTimeout(function () {
-    popup.addClass('clickable')
-  }, 5)
-}
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  $('.popup__close-btn').on('click', function () {
-    let popup = $('.popup')
-    popup.removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  $(document).on('click', function (e) {
-    let popup = $('.popup')
-    if (
-      !$(e.target).closest('.popup').length &&
-      popup.hasClass('_opened') &&
-      popup.hasClass('clickable')
-    ) {
-      popup.removeClass('_opened')
-      window.setTimeout(function () {
-        popup.removeClass('clickable')
-      }, 5)
-    }
-  })
-
-  $(document).on('keydown', function (event) {
-    let popup = $('.popup')
-    let popupFinished = $('.popupFinished')
-
-    if (popup.hasClass('_opened') || popupFinished.hasClass('_opened')) {
-      if (event.key == 'Escape') {
-        popup.removeClass('_opened')
-        window.setTimeout(function () {
-          popup.removeClass('clickable')
-        }, 5)
-      }
-    }
-  })
+  dialog()
 })
-function showOneSpeech(classname) {
-  $(classname).fadeIn(1000)
-}
-
-function showSpeech(startNum, n) {
-  let counter = startNum
-  let secondCounter = 0
-  while (startNum < n) {
-    let classname = '.r' + startNum
-    setTimeout(() => showOneSpeech(classname), secondCounter * 1000)
-    secondCounter++
-    speechCounter++
-    startNum++
-    counter = counter + 1
-  }
-}
-
-showSpeech(speechCounter, 3)
-
-function correctAnswer() {
-  $('.stage' + stageNum).fadeOut(1000)
-  let endSpeech = 0
-  stageNum++
-  let classname = '.stage' + stageNum
-  setTimeout(() => $(classname).fadeIn(1000), 1000)
-  switch (stageNum) {
-    case 1:
-      endSpeech = 5
-      break
-    case 2:
-      endSpeech = 7
-      break
-    case 3:
-      endSpeech = 9
-      break
-    case 4:
-      endSpeech = 11
-      break
-  }
-  showSpeech(speechCounter, endSpeech)
-}
 
 function next_block(e) {
   e.preventDefault()
@@ -133,14 +39,14 @@ function next_block(e) {
         />
       </div>
       <div class="col-6 dialog_style-4">
-        <div class="stage0 col-stage">
-          <div class="archContainer rounded-all r0">
+        <div class="stage0 col-stage active">
+          <div class="archContainer rounded-all r0 f-speach">
             <b>
               <p>{{ translate('Главный архитектор') }}</p>
             </b>
             <p>{{ translate('Здравствуйте, Дмитрий Иванович!') }}</p>
           </div>
-          <div class="richContainer rounded-all r1">
+          <div class="richContainer rounded-all r1 f-speach">
             <b>
               <p>{{ translate('Заказчик') }}</p>
             </b>
@@ -148,25 +54,19 @@ function next_block(e) {
               {{ translate('Добрый день! Ну что, укладываетесь в сроки?') }}
             </p>
           </div>
-          <div class="archContainer rounded-all r2">
+          <div class="archContainer rounded-all r2 f-speach">
             <b>
               <p>{{ translate('Главный архитектор') }}</p>
             </b>
             <ul>
-              <li
-                class="correct"
-                @click="correctAnswer(), log('ACTIVITY', 'user_action', 4, 1)"
-              >
+              <li class="correct" @click="log('ACTIVITY', 'user_action', 4, 1)">
                 {{
                   translate(
                     'Конечно, укладываемся. Если сейчас согласуем проект, то уже через две недели закончим с оставшимися расчётами и сможем приступать к строительству.'
                   )
                 }}
               </li>
-              <li
-                class="wrong"
-                @click="wrongAnswer(), log('ACTIVITY', 'user_action', 4, 2)"
-              >
+              <li class="wrong" @click="log('ACTIVITY', 'user_action', 4, 2)">
                 {{
                   translate(
                     'Э-э… Ну… Знаете, мы ещё не все расчёты провели,топосъёмку не сделали. В общем…'
@@ -195,20 +95,14 @@ function next_block(e) {
               <p>{{ translate('Главный архитектор') }}</p>
             </b>
             <ul>
-              <li
-                class="correct"
-                @click="correctAnswer(), log('ACTIVITY', 'user_action', 4, 3)"
-              >
+              <li class="correct" @click="log('ACTIVITY', 'user_action', 4, 3)">
                 {{
                   translate(
                     'Да, в местах, где будут уклоны или насыпные возвышенности, мы сделаем удобные дорожки с плавными съездами. В общественных туалетах предусмотрены отдельные комнаты. А все навигационные таблички будем дублировать шрифтом Брайля.'
                   )
                 }}
               </li>
-              <li
-                class="wrong"
-                @click="wrongAnswer(), log('ACTIVITY', 'user_action', 4, 4)"
-              >
+              <li class="wrong" @click="log('ACTIVITY', 'user_action', 4, 4)">
                 {{
                   translate(
                     'Мы, конечно, подумали, но решили ничего особенного в проект не добавлять.'
@@ -231,17 +125,12 @@ function next_block(e) {
               <p>{{ translate('Главный архитектор') }}</p>
             </b>
             <ul>
-              <li
-                class="wrong"
-                @click="wrongAnswer(), log('ACTIVITY', 'user_action', 4, 5)"
-              >
+              <li class="wrong" @click="log('ACTIVITY', 'user_action', 4, 5)">
                 {{
                   translate('Зачем? Коммерческие точки появятся сами собой!')
                 }}
               </li>
-              <li
-                @click="correctAnswer(), log('ACTIVITY', 'user_action', 4, 6)"
-              >
+              <li class="correct" @click="log('ACTIVITY', 'user_action', 4, 6)">
                 {{
                   translate(
                     'Да, как и обсуждали в самом начале: в парке будут заведения с едой и напитками, ларьки с мороженым и водой, прокат спортивного инвентаря. А на центральной площадке можно будет проводить концерты и выставки.'
@@ -270,15 +159,10 @@ function next_block(e) {
               <p>{{ translate('Главный архитектор') }}</p>
             </b>
             <ul>
-              <li
-                class="wrong"
-                @click="wrongAnswer(), log('ACTIVITY', 'user_action', 4, 7)"
-              >
+              <li class="wrong" @click="log('ACTIVITY', 'user_action', 4, 7)">
                 {{ translate('Вам денег жалко что ли?') }}
               </li>
-              <li
-                @click="correctAnswer(), log('ACTIVITY', 'user_action', 4, 8)"
-              >
+              <li class="correct" @click="log('ACTIVITY', 'user_action', 4, 8)">
                 {{
                   translate(
                     'Да, сейчас уже понятен предварительный бюджет. Смета рассчитывается в несколько этапов: после проектной стадии и перед стройкой мы ещё раз вместе всё оценим.'
@@ -308,13 +192,11 @@ function next_block(e) {
             </b>
             <p>{{ translate('Замечательно!') }}</p>
             <div
+              @click=";[next_block($event), emit('next')]"
               type="button"
               class="btn btn-outline-warning rounded-all-lightly button-final dialog_style-9"
             >
-              <button
-                class="dialog_style-10"
-                @click=";[next_block($event), emit('next')]"
-              >
+              <button class="dialog_style-10">
                 {{ translate('Закочить переговоры с заказчиком') }}
               </button>
             </div>

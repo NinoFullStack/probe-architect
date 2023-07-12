@@ -547,18 +547,19 @@
     color: black;
     border: #fada9f;
   }
-  /* .oprosPop .btn-warning:disabled {
-  background-color: #b3b1b1;
-  color: #525151;
-  border: #b3b1b1;
-  pointer-events: none;
-} */
+  .oprosPop .btn-warning:disabled {
+    background-color: #b3b1b1;
+    color: #525151;
+    border: #b3b1b1;
+    pointer-events: none;
+  }
   .oprosPop .speech-bubble {
     position: absolute;
     padding: 0.5rem 0.5rem;
     background: white;
     border-radius: 0.4em;
   }
+
   .oprosPop .speech-bubble.speech-right:after {
     content: '';
     position: absolute;
@@ -742,12 +743,7 @@
     color: red;
   }
 
-  .overlay.oprosPop_style-1 {
-    display: none;
-  }
-
   .rounded-all.modalWindow.totalWindow.container.px-4.oprosPop_style-2 {
-    display: none;
     padding: 32px 40px !important;
     max-width: 845px;
   }
@@ -1171,6 +1167,8 @@
     position: absolute;
     padding: 0.5rem 0.5rem;
     border-radius: 0.4em;
+    z-index: 0 !important;
+    opacity: 0 !important;
   }
   .ending .speech-bubble::after {
     content: none !important;
@@ -1275,10 +1273,6 @@
     object-position: center top;
   }
 
-  .overlay.ending_style-18 {
-    display: none;
-  }
-
   .wrapper.home_style-1 {
     height: 100vh !important;
   }
@@ -1301,4 +1295,164 @@
   .opros_style-17 .fa-x {
     margin-right: 7px;
   }
+
+  .speech-bubble {
+    display: block;
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity ease 0.4s, transform ease 0.4s;
+  }
+
+  .oprosPop .speech-bubble.showed {
+    transform: translateY(0px);
+    opacity: 1 !important;
+    pointer-events: all;
+  }
+
+  .oprosPop .speech-bubble {
+    display: block !important;
+  }
+
+  .oprosPop .totalWindow {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity ease 0.4s;
+  }
+  .oprosPop .totalWindow.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .hide {
+    opacity: 0;
+    transition: 0.3s all;
+  }
+
+  .zonirovanie .zoneSelected {
+    pointer-events: none;
+  }
+
+  .dialog {
+    .col-stage {
+      display: block !important;
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-60%);
+
+      transition: opacity ease 0.4s, transform ease 0.4s;
+    }
+    .col-stage.active {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    .f-speach {
+      display: block !important;
+      opacity: 0;
+
+      transition: opacity ease 0.4s;
+      position: absolute;
+    }
+    .f-speach.active {
+      position: static;
+      opacity: 1;
+    }
+  }
+
+  .ending {
+    .speech-bubble {
+      z-index: 1;
+      display: none;
+
+      &.active {
+        opacity: 1 !important;
+        display: block !important;
+      }
+    }
+
+    .rounded-all.modalWindow.modalFinal.ending_style-10.container,
+    .overlay.ending_style-18 {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity ease 0.4s;
+
+      &.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
+    .s0 {
+      &.active {
+        animation: 1s s0;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes s0 {
+        100% {
+          margin-left: 15%;
+        }
+      }
+    }
+
+    .s1 {
+      &.active {
+        animation: 1s s1;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes s1 {
+        100% {
+          margin-left: 30%;
+        }
+      }
+    }
+
+    .s2 {
+      &.active {
+        animation: 1s s2;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes s2 {
+        100% {
+          margin-left: 43%;
+        }
+      }
+    }
+
+    .s3 {
+      &.active {
+        animation: 1s s3;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes s3 {
+        100% {
+          margin-left: 50%;
+        }
+      }
+    }
+
+    .s4 {
+      &.active {
+        animation: 1s s4;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes s4 {
+        100% {
+          margin-left: 65%;
+        }
+      }
+    }
+  }
 }
+
+//     break
+//   case '.s4':
+//     $(classname).animate({ marginLeft: '65%' }, 1000)
+//     break

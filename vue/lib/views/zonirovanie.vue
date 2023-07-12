@@ -1,7 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
 import { inject, onMounted } from 'vue'
+
+import { zon } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -12,199 +12,8 @@ const media = inject('media')
 
 const emit = defineEmits(['next'])
 
-let counter = 0
-let firstStage = true
-
-function firstStagePass() {
-  firstStage = false
-  $('.zone0').attr('src', media('./img/Zonirovanie/zZone0Done.png'))
-  $('.zone1').attr('src', media('./img/Zonirovanie/zZone1Done.png'))
-  $('.neccPart').css('background-color', 'lightgreen')
-  $('.roads').css('display', 'block')
-  $('.firstStage').css('display', 'none')
-  $('.secondStage').fadeIn(500)
-  $('.addPart').css('background-color', '#FAE4A5')
-  $('.writingAd').fadeIn(500)
-  $('.zoneFree').css('display', 'block')
-  $('.necessCount').text('')
-  $('.necessCount').append('<i class="fa-solid fa-check fa-xl"></i>')
-  counter = 0
-}
-
-function secondStagePass() {
-  $('.addPart').css('background-color', 'lightgreen')
-  $('.secondStage').fadeOut(500)
-  $('.popup-finished').addClass('_opened')
-  $('.addCount').text('')
-  $('.addCount').append('<i class="fa-solid fa-check fa-xl"></i>')
-  counter = 0
-}
-
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  let neccHeaders = [
-    translate('Пункт проката'),
-    translate('Площадка для собак'),
-    translate('Детская площадка'),
-    translate('Кафе'),
-    translate('Спортивная площадка'),
-  ]
-  let neccDescrs = [
-    translate(
-      'Касса, раздевалка с камерами хранения, стоянка для велосипедов под навесом'
-    ),
-    translate(
-      'Газон, барьеры и тоннели, информационный стенд, урна и ограждение'
-    ),
-    translate(
-      'Качели и горки, детский городок, верёвочные подвесные сооружения'
-    ),
-    translate(
-      'Помещение с кухней, водопроводом и газопроводом, летняя веранда с клумбами'
-    ),
-    translate('Турники, брусья, тренажёры, наклонные скамьи и скалодром'),
-  ]
-
-  $('.firstStage').fadeIn(500)
-  updateHeader(counter)
-  updateDescr(counter)
-  function updateWriting(n) {
-    let avatarPos
-    if (n - 1 != 5) {
-      avatarPos = ['30px', '30px', '70px', '-30px', '59px', '40px']
-      $('#avik').attr('src', media('./img/avatars/avatar') + n + '.png')
-      $('#avik').css('top', avatarPos[n])
-      $('#zapiska').attr('src', media('./img/avatars/writing') + n + '.png')
-    } else {
-      avatarPos = ['30px', '30px', '70px', '-30px', '59px', '40px']
-      $('#avik').css('display', 'none')
-      $('#zapiska').css('display', 'none')
-    }
-  }
-
-  function wrongAnswer() {
-    window.localStorage.setItem('error', 'true')
-    let popup = $('.popup')
-    popup.addClass('_opened')
-    window.setTimeout(function () {
-      popup.addClass('clickable')
-    }, 5)
-  }
-
-  $('.popup__close-btn').on('click', function () {
-    let popup = $('.popup')
-    popup.removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  $(document).on('click', function (e) {
-    let popup = $('.popup')
-    if (
-      !$(e.target).closest('.popup').length &&
-      popup.hasClass('_opened') &&
-      popup.hasClass('clickable')
-    ) {
-      popup.removeClass('_opened')
-      window.setTimeout(function () {
-        popup.removeClass('clickable')
-      }, 5)
-    }
-  })
-
-  $(document).on('keydown', function (event) {
-    let popup = $('.popup')
-    let popupFinished = $('.popupFinished')
-
-    if (popup.hasClass('_opened') || popupFinished.hasClass('_opened')) {
-      if (event.key == 'Escape') {
-        popup.removeClass('_opened')
-        window.setTimeout(function () {
-          popup.removeClass('clickable')
-        }, 5)
-      }
-    }
-  })
-
-  function selectNeccZone(n) {
-    log('ACTIVITY', 'user_action', 4, n + 1)
-    let classname = '.a' + n
-    $(classname).attr(
-      'src',
-      media('./img/Zonirovanie/zZone') + n + 'Select.png'
-    )
-  }
-
-  function updateCounter(n) {
-    let classname = firstStage ? '.necessCount' : '.addCount'
-    let totalCount = firstStage ? '2' : '5'
-    $(classname).text(n + '/' + totalCount)
-  }
-
-  function updateHeader(n) {
-    if (n != 5) {
-      $('.addZoneHeader').text(neccHeaders[n])
-    } else {
-      $('.addZoneHeader').text('')
-    }
-  }
-
-  function updateDescr(n) {
-    if (n != 5) {
-      $('.addZoneDescr').text(neccDescrs[n])
-    } else {
-      $('.addZoneDescr').text('')
-    }
-  }
-
-  $('.zone').on('click', function () {
-    if (!$(this).hasClass('zoneSelected')) {
-      let classname = 'a' + counter
-      if ($(this).hasClass(classname)) {
-        selectNeccZone(counter)
-        $(this).addClass('zoneSelected')
-        counter++
-        updateHeader(counter)
-        updateDescr(counter)
-        updateCounter(counter)
-        if (counter == 2) {
-          $('.firstStageButton').attr('disabled', false)
-        }
-      } else {
-        wrongAnswer()
-      }
-    }
-  })
-
-  $('.zoneFree').on('click', function () {
-    log('ACTIVITY', 'user_action', 3, counter + 3)
-    if (!$(this).hasClass('zoneSelected')) {
-      if (counter == 5) {
-        console.log(counter + ' line161 ')
-      }
-      $(this).addClass('zoneSelected')
-      let src = $(this).attr('src')
-      let newSrc = src.substring(0, src.length - 4)
-      newSrc = newSrc + 'Select.png'
-      $(this).attr('src', newSrc)
-      counter++
-      updateWriting(counter + 1)
-      updateHeader(counter)
-      updateDescr(counter)
-      updateCounter(counter)
-      if (counter == 5) {
-        $('.secondStageButton').attr('disabled', false)
-      }
-    }
-  })
+  zon()
 })
 
 function next_block(e) {
@@ -347,11 +156,7 @@ function next_block(e) {
                         )
                       }}
                     </p>
-                    <button
-                      class="firstStageButton stage-btn"
-                      @click="firstStagePass()"
-                      disabled
-                    >
+                    <button class="firstStageButton stage-btn" disabled>
                       {{ translate('Подтвердить') }}
                     </button>
                   </div>
@@ -373,11 +178,7 @@ function next_block(e) {
                   <div class="py-2">
                     <h3 class="addZoneHeader"></h3>
                     <p class="addZoneDescr"></p>
-                    <button
-                      class="secondStageButton stage-btn"
-                      @click="secondStagePass()"
-                      disabled
-                    >
+                    <button class="secondStageButton stage-btn" disabled>
                       {{ translate('Подтвердить') }}
                     </button>
                   </div>

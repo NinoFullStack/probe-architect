@@ -1,7 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
 import { inject, onMounted } from 'vue'
+
+import { ending } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -12,51 +12,8 @@ const media = inject('media')
 
 const emit = defineEmits(['next'])
 
-let counter = 0
-
-function endModal() {
-  $('.overlay').fadeIn(500)
-  $('.modalFinal').fadeIn(500)
-}
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  function moveBubble(classname) {
-    switch (classname) {
-      case '.s0':
-        $(classname).animate({ marginLeft: '15%' }, 1000)
-        break
-      case '.s1':
-        $(classname).animate({ marginLeft: '30%' }, 1000)
-        break
-      case '.s2':
-        $(classname).animate({ marginLeft: '43%' }, 1000)
-        break
-      case '.s3':
-        $(classname).animate({ marginLeft: '50%' }, 1000)
-        break
-      case '.s4':
-        $(classname).animate({ marginLeft: '65%' }, 1000)
-        break
-    }
-  }
-
-  function appearBubble(classname) {
-    $(classname).fadeIn(500)
-  }
-
-  while (counter < 5) {
-    let classname = '.s' + counter
-    setTimeout(() => appearBubble(classname), counter * 1000)
-    setTimeout(() => moveBubble(classname), counter * 1200)
-    counter++
-  }
+  ending()
 })
 
 function finish() {
@@ -115,10 +72,7 @@ function finish() {
                 data-aos-duration="800"
                 data-aos-delay="800"
               >
-                <button
-                  class="welcome-button button ending_style-4"
-                  @click="endModal"
-                >
+                <button class="welcome-button button ending_style-4 end-button">
                   {{ translate('Завершить работу') }}
                 </button>
               </div>

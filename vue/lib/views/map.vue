@@ -1,8 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
-
 import { inject, onMounted } from 'vue'
+
+import { map } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -14,176 +13,7 @@ const media = inject('media')
 const emit = defineEmits(['next'])
 
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  function clearZonesAndBoxes() {
-    let nonSelectable = ''
-    if (count == 3) {
-      nonSelectable = 'zone4'
-    } else if (count == 2) {
-      nonSelectable = 'zone3'
-    }
-    $('.zoneSelected').each(function () {
-      if ($(this).hasClass(nonSelectable)) {
-        $(this).addClass('wrongZone')
-      }
-      $(this).removeClass('zoneSelected')
-    })
-    $('.boxSelected').each(function () {
-      $(this).text('')
-      $(this).removeClass('checked')
-    })
-  }
-  function checkCount() {
-    if (count == 3 && $('.firstQuestion').is(':visible')) {
-      $('.nextQuestion').removeClass('button_disabled')
-    } else {
-      $('.nextQuestion').addClass('button_disabled')
-    }
-    if (count == 2 && $('.secondQuestion').is(':visible')) {
-      $('.nextQuestion').removeClass('button_disabled')
-    }
-    if (count == 1 && $('.thirdQuestion').is(':visible')) {
-      $('.nextQuestion').removeClass('button_disabled')
-    }
-  }
-
-  function wrongAnswer() {
-    window.localStorage.setItem('error', 'true')
-    $('.popup').addClass('_opened')
-    var popup = $('.popup')
-    window.setTimeout(function () {
-      popup.addClass('clickable')
-    }, 5)
-  }
-
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-  $(document).on('click', function (e) {
-    var popup = $('.popup')
-    if (
-      !$(e.target).closest('.popup').length &&
-      popup.hasClass('_opened') &&
-      popup.hasClass('clickable')
-    ) {
-      popup.removeClass('_opened')
-      window.setTimeout(function () {
-        popup.removeClass('clickable')
-      }, 5)
-    }
-  })
-  $(document).on('keydown', function (event) {
-    var popup = $('.popup')
-    var popupFinished = $('.popupFinished')
-
-    if (popup.hasClass('_opened') || popupFinished.hasClass('_opened')) {
-      if (event.key == 'Escape') {
-        popup.removeClass('_opened')
-        window.setTimeout(function () {
-          popup.removeClass('clickable')
-        }, 5)
-      }
-    }
-  })
-
-  $('.startButt').on('click', function () {
-    $('.modalStart').fadeOut(500)
-    $('.overlay').fadeOut(500)
-
-    $('.workflow').addClass('visible')
-  })
-
-  let count = 0
-  $('.zone1').on('click', function () {
-    log('ACTIVITY', 'user_action', 1, 1)
-    wrongAnswer()
-  })
-  $('.zone2').on('click', function () {
-    log('ACTIVITY', 'user_action', 1, 2)
-    if ($('.zone2').hasClass('zone') && !$('.zone2').hasClass('zoneSelected')) {
-      $('.zone2').addClass('zoneSelected')
-      $('.box2').addClass('boxSelected')
-      $('.zone2').attr('src', media('./img/map/zone2active.png'))
-      $('.box2').addClass('checked')
-      count++
-      checkCount()
-    }
-  })
-  $('.zone3').on('click', function () {
-    log('ACTIVITY', 'user_action', 1, 3)
-    if (
-      !$('.zone3').hasClass('wrongZone') &&
-      !$('.zone3').hasClass('zoneSelected')
-    ) {
-      $('.zone3').addClass('zoneSelected')
-      $('.box3').addClass('boxSelected')
-      $('.zone3').attr('src', media('./img/map/zone3active.png'))
-      $('.box3').addClass('checked')
-      count++
-      checkCount()
-    } else {
-      wrongAnswer()
-    }
-  })
-  $('.zone4').on('click', function () {
-    log('ACTIVITY', 'user_action', 1, 4)
-    if (
-      !$('.zone4').hasClass('wrongZone') &&
-      !$('.zone4').hasClass('zoneSelected')
-    ) {
-      $('.zone4').addClass('zoneSelected')
-      $('.zone4').attr('src', media('./img/map/zone4active.png'))
-      $('.box4').addClass('boxSelected')
-      $('.box4').addClass('checked')
-      count++
-      checkCount()
-    } else {
-      wrongAnswer()
-    }
-  })
-
-  $('.nextQuestion').on('click', function () {
-    if (count == 3 && $('.firstQuestion').is(':visible')) {
-      $('.zone1').fadeOut(500)
-      $('.firstQuestion').fadeOut(500)
-      $('.mapPeople').fadeOut(500)
-      $('.secondQuestion').fadeIn(500)
-      $('.mapTracks').fadeIn(500)
-      $('.zone2').attr('src', media('./img/map/zone2.png'))
-      $('.zone3').attr('src', media('./img/map/zone3.png'))
-      $('.zone4').attr('src', media('./img/map/zone4.png'))
-      clearZonesAndBoxes()
-      count = 0
-      checkCount()
-    } else if (count == 2 && $('.secondQuestion').is(':visible')) {
-      $('.zone4').fadeOut(500)
-      $('.secondQuestion').fadeOut(500)
-      $('.mapTracks').fadeOut(500)
-      $('.thirdQuestion').fadeIn(500)
-      $('.mapWideTracks').fadeIn(500)
-      $('.mapAreas').fadeIn(500)
-      $('.zone2').attr('src', media('./img/map/zone2.png'))
-      $('.zone3').attr('src', media('./img/map/zone3.png'))
-      clearZonesAndBoxes()
-      count = 0
-      checkCount()
-    } else if (count == 1 && $('.thirdQuestion').is(':visible')) {
-      $('.nextQuestion').fadeOut(500)
-      $('.popup-finished').addClass('_opened')
-      checkCount()
-    }
-  })
+  map()
 })
 
 function next_block(e) {
@@ -401,7 +231,7 @@ function next_block(e) {
           </div>
 
           <div
-            class="rounded-all modalWindow modalStart container"
+            class="rounded-all modalWindow modalStart active container"
             id="map-popup"
           >
             <div class="row mx-4">
@@ -436,7 +266,7 @@ function next_block(e) {
             </button>
           </div>
 
-          <div class="overlay"></div>
+          <div class="overlay active"></div>
         </div>
       </main>
 

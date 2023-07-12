@@ -1,4 +1,41 @@
 #architect {
+  .modalStart.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modalStart {
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity ease-in-out 0.3s;
+  }
+  .overlay {
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity ease-in-out 0.3s;
+  }
+  .overlay.active {
+    opacity: 0.6;
+    pointer-events: all;
+  }
+
+  .mapPeople,
+  .mapTracks,
+  .mapAreas,
+  .mapWideTracks {
+    opacity: 0;
+    transition: opacity ease-in-out 0.3s, transform ease-in-out 0.3s;
+    pointer-events: none;
+  }
+  .mapPeople.active,
+  .mapTracks.active,
+  .mapAreas.active,
+  .mapWideTracks.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
   img {
     max-width: 100%;
     max-height: 100%;

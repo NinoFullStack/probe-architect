@@ -1,7 +1,7 @@
 <script setup>
-import jQuery from 'jquery'
-const $ = jQuery
 import { inject, onMounted } from 'vue'
+
+import { oprosPop } from '../utils'
 
 // eslint-disable-next-line no-unused-vars
 const translate = inject('translate')
@@ -13,111 +13,7 @@ const media = inject('media')
 const emit = defineEmits(['next'])
 
 onMounted(() => {
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-
-  let counter = 0
-  let popup = $('.popup')
-
-  fadeInSpeech(0)
-
-  function wrongAnswer() {
-    window.localStorage.setItem('error', 'true')
-    $('.popup').addClass('_opened')
-    window.setTimeout(function () {
-      popup.addClass('clickable')
-    }, 5)
-  }
-
-  $('.popup__close-btn').on('click', function () {
-    var popup = $('.popup')
-    $('.popup').removeClass('_opened')
-    window.setTimeout(function () {
-      popup.removeClass('clickable')
-    }, 5)
-  })
-  $(document).on('click', function (e) {
-    var popup = $('.popup')
-    if (
-      !$(e.target).closest('.popup').length &&
-      popup.hasClass('_opened') &&
-      popup.hasClass('clickable')
-    ) {
-      popup.removeClass('_opened')
-      window.setTimeout(function () {
-        popup.removeClass('clickable')
-      }, 5)
-    }
-  })
-  $(document).on('keydown', function (event) {
-    var popup = $('.popup')
-    var popupFinished = $('.popupFinished')
-
-    if (popup.hasClass('_opened') || popupFinished.hasClass('_opened')) {
-      if (event.key == 'Escape') {
-        popup.removeClass('_opened')
-        window.setTimeout(function () {
-          popup.removeClass('clickable')
-        }, 5)
-      }
-    }
-  })
-
-  function fadeInSpeech(n) {
-    let classname = '.s' + n
-    $(classname).fadeIn(500)
-  }
-
-  function fadeOutSpeech(n) {
-    let classname = '.s' + n
-    $(classname).fadeOut(500)
-  }
-
-  function totalWindow() {
-    $('.overlay').fadeIn(500)
-    $('.totalWindow').fadeIn(500)
-  }
-
-  function changeProgCount(n) {
-    $('.progCount').text(n + '/6')
-  }
-
-  function updateHappy(n) {
-    $('.happyIndex').attr(
-      'src',
-      media('../../public/img/happy') + (n + 1) + '.png'
-    )
-    if (n + 1 == 3) {
-      $('.happyState').text(translate('Уже лучше...'))
-      $('.happyState').css('color', 'orange')
-    }
-    if (n + 1 == 5) {
-      $('.happyState').text(translate('Все довольны!'))
-      $('.happyState').css('color', 'green')
-    }
-  }
-
-  $('.btn-warning').on('click', function () {
-    let classname = 'a' + counter
-    if ($(this).hasClass(classname)) {
-      fadeOutSpeech(counter)
-      updateHappy(counter)
-      counter++
-      changeProgCount(counter)
-      fadeInSpeech(counter)
-      $(this).prop('disabled', true)
-      if (counter == 6) {
-        setTimeout(() => totalWindow(), 2000)
-      }
-    } else {
-      wrongAnswer()
-    }
-  })
+  oprosPop()
 })
 
 function next_block(e) {
@@ -191,7 +87,9 @@ function next_block(e) {
                   <h6>{{ translate('Неплохо бы арендовать ролики и') }}</h6>
                   <h6>{{ translate('велосипеды прямо в парке') }}</h6>
                 </div>
-                <div class="speech-bubble speech-left s5 oprosPop_style-21">
+                <div
+                  class="speech-bubble speech-bubble_last speech-left s5 oprosPop_style-21"
+                >
                   <h6>
                     {{ translate('Я хотел бы дрессировать собаку в парке') }}
                   </h6>
